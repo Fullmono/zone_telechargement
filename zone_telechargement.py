@@ -3,9 +3,19 @@
 import os.path
 import sys
 import re
-import requests
 import configparser
-from bs4 import BeautifulSoup
+try:
+    import requests
+except ImportError:
+    print ("""Module requests not found.\
+           \nPlease install with pip install requests""")
+    sys.exit()
+try:
+    from bs4 import BeautifulSoup
+except ImportError:
+    print ("""Module beautifulsoup4 not found.\
+           \nPlease install with pip install beaufitulsoup4""")
+    sys.exit()
 import jdownloader
 
 def get_site(site):
@@ -48,7 +58,7 @@ else:
     if (os.path.isfile('config.ini')):
         configfile = 'config.ini'
     else:
-        print ('no config file')
+        print ('no config file, please create config.ini')
         sys.exit()
 
 config = configparser.ConfigParser()
@@ -64,6 +74,8 @@ jdownloader.check_availibility(jd_server)
 
 hoster = config['DEFAULT']['host_id']
 
+config_change = False
+
 for series in config.sections():
     check = get_site(config[series]['link'])
     if check != False:
@@ -71,6 +83,7 @@ for series in config.sections():
         if last_episode == config.getint(series,'last_episode'):
             print ('Last episode for ' + series + ' is up to date.')
         else:
+            config_change = True
             print ('Episode(s) for ' + series + ' to be downloaded')
             for episode in range(config.getint(series,'last_episode')+1, last_episode+1):
                 print(series + ' episode numero : ' + str(episode))
@@ -79,6 +92,7 @@ for series in config.sections():
                     jdownloader.add_link(jd_server, lien)
                     config[series]['last_episode'] = str(episode)
 
-with open(configfile, 'w') as fichierconfig:
-    config.write(fichierconfig)
+if config_change == True:
+    with open(configfile, 'w') as fichierconfig:
+        config.write(fichierconfig)
 
