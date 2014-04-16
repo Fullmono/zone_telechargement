@@ -1,0 +1,10 @@
+[DEFAULT]
+jd_ip = localhost
+jd_port = 10025
+last_episode = 0
+host_id = Uptobox
+
+[name_of_stuff]
+link = http://www.zone-telechargement.com/series/vostfr/xxxxx.html
+last_episode = 12
+
