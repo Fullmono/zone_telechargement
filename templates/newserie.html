@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<head>
+	<title>nouveau lien</title>
+<style>
+table, th, td
+{
+}
+th, td
+{
+padding:5px;
+}
+</style>
+</head>
+
+<body>
+	<h1>nouveau lien</h1>
+
+	<form method='POST'>
+	<table>
+	<tr><td>Name: </td><td><input type="text" name="name"></td></tr>
+	<tr><td>Episode: </td><td><input type="text" name="last_episode" maxlength="2"></td></tr>
+	<tr><td>Link: </td><td><input type="text" name="link" size="100"></td></tr>
+	</table>
+
+	<p></p>
+
+	<table>
+	<tr><td><input type="submit" name="cancel" value="Annuler"></td></tr>
+	<tr><td><input type="submit" name="valider" value="Valider"></td></tr>
+	</form>
+	<form action="/" method='POST'>
+	<tr><td><input type="submit" name="home" value="Accueil"></td></tr>
+	</table>
+	</form>
+
+	{% if message %}
+	<h2>{{ message }}</h2>
+	{% endif %}
+</body>
+</html>

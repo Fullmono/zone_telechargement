@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<head>
+	<title>zone telechargement status</title>
+<style>
+table, th, td
+{
+border-collapse:collapse;
+border: 2px solid black;
+}
+th, td
+{
+padding:5px;
+}
+</style>
+</head>
+
+<body>
+	<h1>Status des liens</h1>
+	{% if series %}
+	<table>
+	<tr>
+		<th>Serie</th>
+		<th>Lien</th>
+		<th>Dernier</th>
+		<th>Edit</th>
+	</tr>
+	{% for serie in series %}
+	<tr>
+		<td>{{ series[serie].name }}</td>
+		<td>{{ series[serie].link }}</td>
+		<td style="text-align:center;">{{ series[serie].last_link }}</td>
+		<td style="text-align:center;"><form action="{{series[serie].name}}" method="POST">
+			<input type="submit" name="name" value = "Edit"></form>
+		</td>
+	</tr>
+	{% endfor %}
+	</table>
+	{% else %}
+	<h2> No series in file </h2>
+	{% endif %}
+
+	<p></p>
+	<form method='POST'>
+		<input type="submit" name="check_now" value="check">
+	</form>
+	<p></p>
+	<form action="/internal/new" method='POST'>
+		<input type="submit" name="add_new" value="addnew">
+	</form>
+
+	{% if message %}
+	<h2>{{ message }}</h2>
+	{% endif %}
+</body>
+</html>
