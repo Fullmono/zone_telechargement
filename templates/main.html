@@ -27,7 +27,7 @@ padding:5px;
 	{% for serie in series %}
 	<tr>
 		<td>{{ series[serie].name }}</td>
-		<td>{{ series[serie].link }}</td>
+		<td><a href="{{ series[serie].link }}">{{ series[serie].link }}</a></td>
 		<td style="text-align:center;">{{ series[serie].last_link }}</td>
 		<td style="text-align:center;"><form action="{{series[serie].name}}" method="POST">
 			<input type="submit" name="name" value = "Edit"></form>

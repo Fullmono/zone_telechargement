@@ -9,13 +9,13 @@ try:
 except ImportError:
     print ("""Module requests not found.\
            \nPlease install with pip install requests""")
-    sys.exit()
+    sys.exit(1)
 try:
     from bs4 import BeautifulSoup
 except ImportError:
     print ("""Module beautifulsoup4 not found.\
-           \nPlease install with pip install beaufitulsoup4""")
-    sys.exit()
+           \nPlease install with pip install beautifulsoup4""")
+    sys.exit(1)
 import jdownloader
 
 def get_site(site):
@@ -53,20 +53,20 @@ if (len(sys.argv)) == 2:
         configfile = sys.argv[1]
     else:
         print('no such file or directory')
-        sys.exit()
+        sys.exit(1)
 else:
     if (os.path.isfile('config.ini')):
         configfile = 'config.ini'
     else:
         print ('no config file, please create config.ini')
-        sys.exit()
+        sys.exit(1)
 
 config = configparser.ConfigParser()
 config.read(configfile)
 
 if len(config.sections()) == 0:
     print ('No available data to get files')
-    sys.exit()
+    sys.exit(1)
 
 jd_server = r'http://' + config['DEFAULT']['jd_ip'] + r':' + config['DEFAULT']['jd_port']
 

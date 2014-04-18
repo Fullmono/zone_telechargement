@@ -15,12 +15,11 @@ padding:5px;
 <body>
 	<h1>Mise à jour d'un lien</h1>
 
-	{% if edit %}
-	<form method='POST'>
+	<form action="/{{name}}" method='POST'>
 	<table>
-	<tr><td>Name: </td><td><input type="text" name="name" value="{{edit.name}}"></td></tr>
-	<tr><td>Episode: </td><td><input type="text" name="last_episode" maxlength="2" value="{{edit.last_episode}}"></td></tr>
-	<tr><td>Link: </td><td><input type="text" name="link" size="100"value="{{edit.link}}"></td></tr>
+	<tr><td>Name: </td><td><input type="text" name="name" value="{{name}}"></td></tr>
+	<tr><td>Episode: </td><td><input type="text" name="last_episode" maxlength="2" value="{{last_episode}}"></td></tr>
+	<tr><td>Link: </td><td><input type="text" name="link" size="100"value="{{link}}"></td></tr>
 	</table>
 
 	<p></p>
@@ -28,12 +27,12 @@ padding:5px;
 	<table>
 	<tr><td><input type="submit" name="cancel" value="Annuler"></td></tr>
 	<tr><td><input type="submit" name="valider" value="Valider"></td></tr>
+	<tr><td><input type="submit" name="home" value="Accueil"></td></tr>
 	</form>
 	<form action="/" method='POST'>
-	<tr><td><input type="submit" name="home" value="Accueil"></td></tr>
+	<tr><td><input type="submit" name="delete" value="Effacer" onclick="return confirm('Are you sure?')"></td></tr>
 	</table>
 	</form>
-	{% endif %}
 
 	{% if message %}
 	<h2>{{ message }}</h2>

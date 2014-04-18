@@ -15,7 +15,7 @@ def check_availibility(server):
             print ('Jdownloader cannot be contacted.')
             print ('Check if is it running.')
             print ('Check config server and port.')
-            sys.exit()
+            sys.exit(1)
 
 def add_link(server, link):
     """add link to jdownloader"""
