@@ -1,20 +1,5 @@
-<!DOCTYPE html>
-<head>
-	<title>zone telechargement status</title>
-<style>
-table, th, td
-{
-border-collapse:collapse;
-border: 2px solid black;
-}
-th, td
-{
-padding:5px;
-}
-</style>
-</head>
-
-<body>
+{% extends "layout.html" %}
+{% block content %}
 	<h1>Status des liens</h1>
 	{% if series %}
 	<table>
@@ -29,9 +14,9 @@ padding:5px;
 		<td>{{ series[serie].name }}</td>
 		<td><a href="{{ series[serie].link }}">{{ series[serie].link }}</a></td>
 		<td style="text-align:center;">{{ series[serie].last_link }}</td>
-		<td style="text-align:center;"><form action="{{series[serie].name}}" method="POST">
-			<input type="submit" name="name" value = "Edit"></form>
-		</td>
+		<!--<td style="text-align:center;"><form action="{{series[serie].name}}" method="POST">
+			<input type="submit" name="name" value = "Edit"></form></td>-->
+		<td style="text-align:center;"><a href="{{ url_for('main') }}{{ series[serie].name }}">Editer</a></td>
 	</tr>
 	{% endfor %}
 	</table>
@@ -43,13 +28,8 @@ padding:5px;
 	<form method='POST'>
 		<input type="submit" name="check_now" value="check">
 	</form>
-	<p></p>
-	<form action="/internal/new" method='POST'>
-		<input type="submit" name="add_new" value="addnew">
-	</form>
 
 	{% if message %}
 	<h2>{{ message }}</h2>
 	{% endif %}
-</body>
-</html>
+{% endblock %}
