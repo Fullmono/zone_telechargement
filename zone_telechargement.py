@@ -85,7 +85,9 @@ for series in config.sections():
         else:
             config_change = True
             print ('Episode(s) for ' + series + ' to be downloaded')
-            for episode in range(config.getint(series,'last_episode')+1, last_episode+1):
+            for episode in range(config.getint(series, 'last_episode')+1, config.getint(series, 'last_episode')+2):
+            #only check one episode at the time otherwise jdownloader mixes up up and not all links are added.
+            #for episode in range(config.getint(series,' last_episode')+1, last_episode+1):
                 print(series + ' episode numero : ' + str(episode))
                 lien = get_link(check, episode)
                 if re.search('http', lien):
