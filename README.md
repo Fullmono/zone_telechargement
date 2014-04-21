@@ -4,7 +4,10 @@ zone_telechargement
 petit script pour ajouter des liens à jdownloader depuis zone-telechargement
 
 il faut avoir les modules requests et beautifulsoup4 installés
+
 il faut aussi activer le remote control dans jdowndloader
+
+pour avoir accès à la config web, lancer web_interface.py, pour le moment cela est lancé en local sur le port 8090
 
 pour configurer copier le fichier config.ini.example en config.ini et modifier
 ####config de base
