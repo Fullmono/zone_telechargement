@@ -43,6 +43,7 @@ templateData = {}
 def main():
         """main page display display list of items of no parameters"""
         global templateData
+        global config
         listeSeries = update_liste(config)
         templateData['series'] = listeSeries
         if request.values.get('check_now') == 'check':
@@ -58,34 +59,53 @@ def main():
 def edit_form(serie):
         """page for editing info for a specific show"""
         global templateData
+        global config
         if serie in config.sections():
                 templateData = {'name' : serie,
                                 'last_episode': str(config[serie]['last_episode']),
                                 'link' : str(config[serie]['link'])}
         else:
                 templateData = {'message' : ['serie ' + str(serie) + ' non trouvée']}
-        if request.values.get('home') == 'Accueil':
-                return redirect(url_for('main'))
         if request.values.get('delete') == 'Effacer':
-                templateData = {'message' : ['serie ' + str(serie) + ' effacée']}
-                return redirect(url_for('main'))
+                if config.has_section(templateData['name']):
+                        config.remove_section(templateData['name'])
+                        templateData = {'message' : ['serie ' + str(serie) + ' effacée']}
+                        with open('config.ini', 'w') as fichierconfig:
+                                config.write(fichierconfig)
+                        return redirect(url_for('main'))
+                else:
+                        templateData['message'] = ['cette série n\'existe pas']
         return render_template('editserie.html', **templateData)
 
 @app.route("/internal/new", methods = ['POST', 'GET'])
 def new_entry():
         """page for adding a new show to the list"""
         global templateData
+        global config
         templateData = {}
         if request.values.get('valider') == 'Valider':
-                templateData = {'name' : str(request.values.get('name')),
-                                'last_episode' : str(request.values.get('last_episode')),
-                                'link' : str(request.values.get('link'))}
-                config.add_section(str(request.values.get('name')))
-                config[str(request.values.get('name'))]['link'] = str(request.values.get('link'))
-                config[str(request.values.get('name'))]['last_episode'] = str(request.values.get('last_episode'))
+                templateData = {'name' : str(request.values.get('name')).lstrip().rstrip(),
+                                'last_episode' : str(request.values.get('last_episode').strip()),
+                                'link' : str(request.values.get('link')).strip()}
+                if templateData['name'] == '':
+                        templateData['message'] = ['nom de série invalide']
+                        return render_template('newserie.html', **templateData)
+                if templateData['last_episode'] == '':
+                        templateData['message'] = ['numéro d\'épisode invalide']
+                        return render_template('newserie.html', **templateData)
+                if templateData['link'] == '':
+                        templateData['message'] = ['lien de la série invalide']
+                        return render_template('newserie.html', **templateData)
+                if config.has_section(templateData['name']):
+                        templateData['message'] = ['cette série existe déjà dans la liste, changer le nom']
+                        return render_template('newserie.html', **templateData)
+                config.add_section(templateData['name'])
+                config[templateData['name']]['link'] = templateData['link']
+                config[templateData['name']]['last_episode'] = templateData['last_episode']
                 with open('config.ini', 'w') as fichierconfig:
                         config.write(fichierconfig)
-                templateData['message'] = ['lien mis ajour']
+                templateData['message'] = ['serie ' + templateData['name'] + ' a été ajoutée']
+                return redirect(url_for('main'))
         return render_template('newserie.html', **templateData)
 
 @app.route("/internal/config", methods = ['POST', 'GET'])
