@@ -10,11 +10,12 @@ def check_availibility(server):
     try:
         r = requests.get(server)
         if r.status_code == 200:
-            print('Jdownloader connection OK')
+            print('connection à jdownloader réussie')
     except requests.exceptions.RequestException:
-            print ('Jdownloader cannot be contacted.')
-            print ('Check if is it running.')
-            print ('Check config server and port.')
+            print ('connection à jdownloader impossible')
+            print ('vérifier si jdownloader est lancé')
+            print ('vérifier que jdownloader à le contrôle à distance actif')
+            print ('vérifier la configuration port et serveur')
             sys.exit(1)
 
 def add_link(server, link):
@@ -24,7 +25,7 @@ def add_link(server, link):
         if r.status_code == 200:
             print(r.text)
     except requests.exceptions.RequestException:
-        print('cannot add link to JD')
+        print('impossible de rejouter le lien à jdownloader')
 
 def start_dl(server):
     """start downloads in JD"""
@@ -33,5 +34,5 @@ def start_dl(server):
         if r.status_code == 200:
             print (r.text)
     except requests.exceptions.RequestException:
-        print('cannot start downloads in JD')
+        print('impossible de lancer les téléchargements sur jdowndloader')
 

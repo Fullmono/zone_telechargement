@@ -56,4 +56,5 @@ docs/_build/
 *.*~
 
 #local config file
+config.ini.bkp
 config.ini

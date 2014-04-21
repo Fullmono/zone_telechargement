@@ -7,14 +7,14 @@ import configparser
 try:
     import requests
 except ImportError:
-    print ("""Module requests not found.\
-           \nPlease install with pip install requests""")
+    print ("""module requests non trouvé.\
+           \ninstaller avec pip install requests""")
     sys.exit(1)
 try:
     from bs4 import BeautifulSoup
 except ImportError:
-    print ("""Module beautifulsoup4 not found.\
-           \nPlease install with pip install beautifulsoup4""")
+    print ("""module beautifulsoup4 non trouvé.\
+           \ninstaller avec pip install beautifulsoup4""")
     sys.exit(1)
 import jdownloader
 
@@ -58,14 +58,14 @@ else:
     if (os.path.isfile('config.ini')):
         configfile = 'config.ini'
     else:
-        print ('no config file, please create config.ini')
+        print ('pas de config trouvée, veuillez créer config.ini depuis config.ini.example')
         sys.exit(1)
 
 config = configparser.ConfigParser()
 config.read(configfile)
 
 if len(config.sections()) == 0:
-    print ('No available data to get files')
+    print ('pas de séries trouvées dans le fichier config')
     sys.exit(1)
 
 jd_server = r'http://' + config['DEFAULT']['jd_ip'] + r':' + config['DEFAULT']['jd_port']
@@ -81,14 +81,14 @@ for series in config.sections():
     if check != False:
         last_episode = get_last_episode(check)
         if last_episode == config.getint(series,'last_episode'):
-            print ('Last episode for ' + series + ' is up to date.')
+            print ('dernier épisode pour ' + series + ' est à jour.')
         else:
             config_change = True
-            print ('Episode(s) for ' + series + ' to be downloaded')
+            print ('épisode pour ' + series + ' à télécharger')
             for episode in range(config.getint(series, 'last_episode')+1, config.getint(series, 'last_episode')+2):
             #only check one episode at the time otherwise jdownloader mixes up up and not all links are added.
             #for episode in range(config.getint(series,' last_episode')+1, last_episode+1):
-                print(series + ' episode numero : ' + str(episode))
+                print(series + ' épisode numéro : ' + str(episode))
                 lien = get_link(check, episode)
                 if re.search('http', lien):
                     jdownloader.add_link(jd_server, lien)

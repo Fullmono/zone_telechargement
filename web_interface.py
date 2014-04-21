@@ -37,6 +37,10 @@ def check_config(configfile):
 
 config = check_config('config.ini')
 
+if config == None:
+        print('Pas de configuration trouvée')
+        sys.exit()
+
 templateData = {}
 
 @app.route("/", methods = ['POST', 'GET'])
@@ -44,6 +48,7 @@ def main():
         """main page display display list of items of no parameters"""
         global templateData
         global config
+        config = check_config('config.ini')
         listeSeries = update_liste(config)
         templateData['series'] = listeSeries
         if request.values.get('check_now') == 'check':
@@ -60,6 +65,7 @@ def edit_form(serie):
         """page for editing info for a specific show"""
         global templateData
         global config
+        config = check_config('config.ini')
         if serie in config.sections():
                 templateData = {'name' : serie,
                                 'last_episode': str(config[serie]['last_episode']),
@@ -68,6 +74,7 @@ def edit_form(serie):
                 templateData = {'message' : ['serie ' + str(serie) + ' non trouvée']}
         if request.values.get('delete') == 'Effacer':
                 if config.has_section(templateData['name']):
+                        print ('série : ' + templateData['name'])
                         config.remove_section(templateData['name'])
                         templateData = {'message' : ['serie ' + str(serie) + ' effacée']}
                         with open('config.ini', 'w') as fichierconfig:

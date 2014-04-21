@@ -23,9 +23,12 @@
 	{% block content %}
 	{% endblock %}
 		{% if message %}
+			<h2>messages:</h2>
+			<ul>
 			{% for line in message %}
-				<h2>{{ line }}</h2>
+				<li>{{ line }}</li>
 			{% endfor %}
+			</ul>
 		{% endif %}
 	</div>
 </body>
