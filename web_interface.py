@@ -186,5 +186,10 @@ def edit_config():
         return render_template('editconfig.html', **templateData)
 
 if __name__ == "__main__":
-	app.run(host='0.0.0.0', port=8090, debug=True)
+        try:
+                import webbrowser
+                webbrowser.open('http://localhost:8090')
+        except ImportError:
+                pass
+        app.run(host='0.0.0.0', port=8090)
 
