@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+	<h1>Configuration</h1>
+	<form method='POST'>
+	<table>
+	<tr><td>IP du serveur jdownloader: </td><td><input type="text" name="jd_ip" value="{{ jd_ip }}"></td></tr>
+	<tr><td>Port du serveur jdownloader: </td><td><input type="number" min="0" max="65535" name="jd_port" maxlength="5" value="{{ jd_port }}"></td></tr>
+	<tr><td>Hébergeur : </td><td><input type="text" name="host_id" size="100" value="{{ host_id }}"></td></tr>
+	</table>
+
+	<p></p>
+
+	<input type="submit" name="cancel" value="Annuler"/>
+	<input type="submit" name="valider" value="Valider"/>
+	</form>
+{% endblock %}

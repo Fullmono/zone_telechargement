@@ -37,10 +37,6 @@ def check_config(configfile):
 
 config = check_config('config.ini')
 
-if config == None:
-        print('Pas de configuration trouvée')
-        sys.exit()
-
 templateData = {}
 
 @app.route("/", methods = ['POST', 'GET'])
@@ -49,6 +45,9 @@ def main():
         global templateData
         global config
         config = check_config('config.ini')
+        if config == None:
+                templateData['message'] = ['pas de configuration trouvée']
+                return redirect(url_for('edit_config'))
         listeSeries = update_liste(config)
         templateData['series'] = listeSeries
         if request.values.get('check_now') == 'check':
@@ -65,6 +64,9 @@ def edit_form(serie):
         """page for editing info for a specific show"""
         global templateData
         global config
+        if config == None:
+                templateData['message'] = ['pas de configuration trouvée']
+                return redirect(url_for('edit_config'))
         config = check_config('config.ini')
         if serie in config.sections():
                 templateData = {'name' : serie,
@@ -89,12 +91,15 @@ def new_entry():
         """page for adding a new show to the list"""
         global templateData
         global config
+        if config == None:
+                templateData['message'] = ['pas de configuration trouvée']
+                return redirect(url_for('edit_config'))
         templateData = {}
         if request.values.get('valider') == 'Valider':
                 templateData = {'name' : str(request.values.get('name')).lstrip().rstrip(),
                                 'last_episode' : str(request.values.get('last_episode').strip()),
                                 'link' : str(request.values.get('link')).strip()}
-                if templateData['name'] == '':
+                if templateData['name'] == '' or templateData['name'] == 'DEFAULT':
                         templateData['message'] = ['nom de série invalide']
                         return render_template('newserie.html', **templateData)
                 if templateData['last_episode'] == '':
@@ -118,8 +123,36 @@ def new_entry():
 @app.route("/internal/config", methods = ['POST', 'GET'])
 def edit_config():
         global templateData
-        templateData['message'] = ['pas encore implémenté']
-        return redirect(url_for('main'))
+        global config
+        try:
+                jd_ip = config['DEFAULT']['jd_ip']
+                jd_port = config['DEFAULT']['jd_port']
+                host_id = config['DEFAULT']['host_id']
+                message = ['config chargée']
+        except (KeyError, TypeError):
+                jd_ip =''
+                jd_port = ''
+                host_id = ''
+                message = ['config non trouvée']
+        templateData = {'jd_ip' : jd_ip, 'jd_port' : jd_port, 'host_id' : host_id, 'message' : message}
+        if request.values.get('cancel') == 'Annuler':
+                pass
+        if request.values.get('valider') == 'Valider':
+                jd_ip = str(request.values.get('jd_ip')).strip()
+                jd_port = str(request.values.get('jd_port')).strip()
+                host_id = str(request.values.get('host_id')).strip()
+                if jd_ip == '' or jd_port == '' or host_id == '':
+                        templateData['message'] = ['configuration invalide']
+                else:
+                        config['DEFAULT']['jd_ip'] = jd_ip
+                        config['DEFAULT']['jd_port'] = jd_port
+                        config['DEFAULT']['host_id'] = host_id
+                        config['DEFAULT']['last_episode'] = '0'
+                        with open('config.ini', 'w') as fichierconfig:
+                                config.write(fichierconfig)
+                        templateData['message'] = ['configuration mise à jour']
+                        return redirect(url_for('main'))
+        return render_template('editconfig.html', **templateData)
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0', port=8090, debug=True)

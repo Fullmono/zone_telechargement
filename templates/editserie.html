@@ -5,7 +5,7 @@
 	<form action="/{{name}}" method='POST'>
 	<table>
 	<tr><td>Name: </td><td><input type="text" name="name" value="{{name}}"></td></tr>
-	<tr><td>Episode: </td><td><input type="text" name="last_episode" maxlength="2" value="{{last_episode}}"></td></tr>
+	<tr><td>Episode: </td><td><input type="number" min="0" max="30" name="last_episode" maxlength="2" value="{{last_episode}}"></td></tr>
 	<tr><td>Link: </td><td><input type="text" name="link" size="100"value="{{link}}"></td></tr>
 	</table>
 
