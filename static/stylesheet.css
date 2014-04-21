@@ -1,26 +1,44 @@
 .header {
 	z-index: 1;
 	position: fixed;
-	width: 97.5%;
+	width: 99%;
 	margin-top: 1px;
 	height: 120px;
 	background-color: #191970;
 	margin-bottom: 10px;
 	border-radius: 10px;
-
 }
 
+
 .menu {
-	color: white;
-	display: inline;
 	list-style-type: none;
 	float: left;
-	padding-left: 20px;
+}
+
+.menu ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.menu li {
+	float: left;
+	margin-left: 30px;
+}
+
+.menu a{
+	display: block;
+	width: 120px;
+	color: white;
+}
+
+.menu  a:hover {
+	font-weight: bold;
 }
 
 #titre {
 	padding-top: 5px;
-	font-size: 16px;
+	font-size: 150%;
 	font-family: Verdana, sans-serif;
 	color: #ffffff;
 	text-align: center;
@@ -35,9 +53,9 @@
 	width: 90%;
 	margin-bottom: 10px;
 	clear: both;
-
 }
 
-.menu  a:hover {
-	font-weight: bold;
+.content table, td, th, tr{
+	border: 1px solid black;
+	border-collapse:collapse;
 }

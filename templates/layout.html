@@ -9,12 +9,12 @@
 <body>
 	<header>
 		<div class="header">
-			<p id="titre">interface zone telechargement</p>
+			<h1 id="titre">interface zone telechargement</h1>
 			<div class="menu">
 				<ul>
-				<li class="menu"><a class="menu" href="{{ url_for('main') }}">Accueil</a></li>
-				<li class="menu"><a class="menu" href="{{ url_for('new_entry') }}">Nouveau lien</a></li>
-				<li class="menu"><a class="menu" href="{{ url_for('main') }}">Config (a implémenter)</a></li>
+					<li><a href="{{ url_for('main') }}">Accueil</a></li>
+					<li><a href="{{ url_for('new_entry') }}">Nouveau lien</a></li>
+					<li><a href="{{ url_for('edit_config') }}">Configuration</a></li>
 				</ul>
 			</div>
 		</div>
@@ -22,6 +22,11 @@
 	<div class="content">
 	{% block content %}
 	{% endblock %}
+		{% if message %}
+			{% for line in message %}
+				<h2>{{ line }}</h2>
+			{% endfor %}
+		{% endif %}
 	</div>
 </body>
 </html>

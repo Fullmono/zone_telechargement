@@ -11,13 +11,7 @@
 
 	<p></p>
 
-	<table>
-	<tr><td><input type="submit" name="cancel" value="Annuler"></td></tr>
-	<tr><td><input type="submit" name="valider" value="Valider"></td></tr>
+	<input type="submit" name="cancel" value="Annuler"/>
+	<input type="submit" name="valider" value="Valider"/>
 	</form>
-	</table>
-
-	{% if message %}
-	<h2>{{ message }}</h2>
-	{% endif %}
 {% endblock %}

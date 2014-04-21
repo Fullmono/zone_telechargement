@@ -11,16 +11,8 @@
 
 	<p></p>
 
-	<table>
-	<tr><td><input type="submit" name="cancel" value="Annuler"></td></tr>
-	<tr><td><input type="submit" name="valider" value="Valider"></td></tr>
+	<input type="submit" name="cancel" value="Annuler"/>
+	<input type="submit" name="valider" value="Valider"/>
+	<input type="submit" name="delete" value="Effacer" onclick="return confirm('Etes vous sur de vouloir effacer {{name}}?')"/>
 	</form>
-	<form action="/" method='POST'>
-	<tr><td><input type="submit" name="delete" value="Effacer" onclick="return confirm('Are you sure?')"></td></tr>
-	</table>
-	</form>
-
-	{% if message %}
-	<h2>{{ message }}</h2>
-	{% endif %}
 {% endblock %}
