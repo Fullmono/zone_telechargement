@@ -50,7 +50,7 @@ def main():
                 return redirect(url_for('edit_config'))
         listeSeries = update_liste(config)
         templateData['series'] = listeSeries
-        if request.values.get('check_now') == 'check':
+        if request.values.get('check_now') == 'vérifier':
                 try:
                         retcode = subprocess.check_output(['python', 'zone_telechargement.py'], universal_newlines=True)
                         templateData['message'] = str(retcode).split('\n')
@@ -84,6 +84,36 @@ def edit_form(serie):
                         return redirect(url_for('main'))
                 else:
                         templateData['message'] = ['cette série n\'existe pas']
+        if request.values.get('valider') == 'Valider':
+                name = str(request.values.get('name')).strip()
+                last_episode = str(request.values.get('last_episode')).strip()
+                link = str(request.values.get('link')).strip()
+                if name == '' or link == '':
+                        templateData['message'] = ['nom ou lien invalide']
+                        render_template('editserie.html', **templateData)
+                if name == serie:
+                        templateData['message'] = ['serie ' + serie + ' mise à jour']
+                        config[serie]['link'] = link
+                        if last_episode == '':
+                                config[serie]['last_episode'] = config['DEFAULT']['last_episode']
+                        else:
+                                config[serie]['last_episode'] = last_episode
+                        with open('config.ini', 'w') as fichierconfig:
+                                config.write(fichierconfig)
+                        return redirect(url_for('main'))
+                else:
+                        if config.has_section(name):
+                                config.remove_section(name)
+                        config.add_section(name)
+                        config[name]['link'] = link
+                        if last_episode == '':
+                                config[name]['last_episode'] = config['DEFAULT']['last_episode']
+                        else:
+                                config[name]['last_episode'] = last_episode
+                        with open('config.ini', 'w') as fichierconfig:
+                                config.write(fichierconfig)
+                        templateData['message'] = ['serie ' + name + ' mise à jour']
+                        return(url_for('main'))
         return render_template('editserie.html', **templateData)
 
 @app.route("/internal/new", methods = ['POST', 'GET'])
@@ -130,6 +160,7 @@ def edit_config():
                 host_id = config['DEFAULT']['host_id']
                 message = ['config chargée']
         except (KeyError, TypeError):
+                config = configparser.ConfigParser()
                 jd_ip =''
                 jd_port = ''
                 host_id = ''
