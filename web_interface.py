@@ -102,8 +102,8 @@ def edit_form(serie):
                                 config.write(fichierconfig)
                         return redirect(url_for('main'))
                 else:
-                        if config.has_section(name):
-                                config.remove_section(name)
+                        if config.has_section(serie):
+                                config.remove_section(serie)
                         config.add_section(name)
                         config[name]['link'] = link
                         if last_episode == '':
@@ -113,7 +113,7 @@ def edit_form(serie):
                         with open('config.ini', 'w') as fichierconfig:
                                 config.write(fichierconfig)
                         templateData['message'] = ['serie ' + name + ' mise à jour']
-                        return(url_for('main'))
+                        return redirect(url_for('main'))
         return render_template('editserie.html', **templateData)
 
 @app.route("/internal/new", methods = ['POST', 'GET'])
